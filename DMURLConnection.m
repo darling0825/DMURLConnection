@@ -21,7 +21,7 @@
 		[[NSURLConnection alloc] initWithRequest:req delegate:newCon startImmediately:YES];
 	} else {
 		NSError *err = [NSError errorWithDomain:@"com.davandermobile.dmurlconnection" code:101 userInfo:nil];
-		[del connectionFailedWithError:err];
+		if ([del respondsToSelector:@selector(connectionFailedWithError:)]) [del connectionFailedWithError:err];
 	}
 	return newCon;
 }
@@ -47,7 +47,7 @@
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	[delegate connectionFailedWithError:error];
+	if ([del respondsToSelector:@selector(connectionFailedWithError:)]) [delegate connectionFailedWithError:error];
 	[connection release];
 	[self autorelease];
 }
