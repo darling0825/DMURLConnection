@@ -1,0 +1,29 @@
+DMURLConnection
+
+For when you just need to download some data. Sort of.
+
+Example usage:
+-(void)getConfigFile {
+	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:EB_PNS_RETRIEVE_URL]];
+	[urlRequest setHTTPMethod:@"POST"];
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
+	[dict setValue:[[UIDevice currentDevice] uniqueIdentifier] forKey:@"UUID"];
+	[dict setValue:[[NSNumber numberWithDouble:currentLoc.latitude] stringValue] forKey:APN_D_LAT];
+	[dict setValue:[[NSNumber numberWithDouble:currentLoc.longitude] stringValue] forKey:APN_D_LON];
+	
+	[dict setValue:[defaults objectForKey:APN_PREF_NEWS] forKey:APN_PREF_NEWS];
+	[dict setValue:[defaults objectForKey:APN_PREF_DEALS] forKey:APN_PREF_DEALS];
+	[dict setValue:[defaults objectForKey:APN_PREF_EVENTS] forKey:APN_PREF_EVENTS];
+		
+	NSDictionary *staticDict = [NSDictionary dictionaryWithDictionary:dict];
+	[urlRequest setHTTPBody:[staticDict urlEncodedDataUTF8]];
+
+	[DMURLConnection connectToRequest:urlRequest withDelegate:self];
+}
+
+Delegate methods:
+-(void)connectionFinishedLoadingWithData:(NSMutableData *)rd; // manditory
+-(void)connectionFailedWithError:(NSError *)error; // optional
+
+Helper:
+urlEncodedDataUTF8 is a category on NSDictionary. It's included for convenience, but you may or may not need it.
