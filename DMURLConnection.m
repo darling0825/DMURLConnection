@@ -3,7 +3,11 @@
 //  iPhoneStreamingPlayer
 //
 //  Created by Cory Alder on 10-07-15.
-//  Copyright 2010 Davander Mobile. All rights reserved.
+//  Copyright 2010 Davander Mobile.
+//
+//  License: Any use is fine, with two caviats,
+//  -If you improve on the code, share.
+//  -If you use it in something that ships, let me know.
 //
 
 #import "DMURLConnection.h"

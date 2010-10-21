@@ -31,3 +31,8 @@ Delegate methods:
 
 Helper:
 urlEncodedDataUTF8 is a category on NSDictionary. It's included for convenience, but you may or may not need it.
+
+License:
+Any use is fine, with two caviats,
+-If you improve on the code, share.
+-If you use it in something that ships, let me know.
