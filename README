@@ -2,6 +2,13 @@ DMURLConnection
 
 For when you just need to download some data. Sort of.
 
+DMURLConnection has only been used on the iPhone.
+DMURLConnection does a weird self-retain.
+DMURLConnection retains its delegate.
+DMURLConnection is self-released when either of its delegate methods are called.
+
+Comments, contributions, questions, all are welcome.
+
 Example usage:
 -(void)getConfigFile {
 	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:EB_PNS_RETRIEVE_URL]];
