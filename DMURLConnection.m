@@ -51,7 +51,7 @@
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	if ([del respondsToSelector:@selector(connectionFailedWithError:)]) [delegate connectionFailedWithError:error];
+	if ([delegate respondsToSelector:@selector(connectionFailedWithError:)]) [delegate connectionFailedWithError:error];
 	[connection release];
 	[self autorelease];
 }
