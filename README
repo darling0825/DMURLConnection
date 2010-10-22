@@ -11,13 +11,13 @@ Comments, contributions, questions, all are welcome.
 
 Example usage:
 -(void)getConfigFile {
-	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:EB_PNS_RETRIEVE_URL]];
+	NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:SETTINGS_URL]];
 	[urlRequest setHTTPMethod:@"POST"];
 
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:3];
 	[dict setValue:[[UIDevice currentDevice] uniqueIdentifier] forKey:@"UUID"];
-	[dict setValue:[[NSNumber numberWithDouble:currentLoc.latitude] stringValue] forKey:APN_D_LAT];
-	[dict setValue:[[NSNumber numberWithDouble:currentLoc.longitude] stringValue] forKey:APN_D_LON];
+	[dict setValue:@"parameter value" forKey:@"parameter key"];
+	[dict setValue:@"pvalue2" forKey:@"pkey2"];
 	
 	NSDictionary *staticDict = [NSDictionary dictionaryWithDictionary:dict];
 	[urlRequest setHTTPBody:[staticDict urlEncodedDataUTF8]];
