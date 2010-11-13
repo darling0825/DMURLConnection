@@ -29,6 +29,14 @@ Delegate methods:
 -(void)connectionFinishedLoadingWithData:(NSMutableData *)rd; // manditory
 -(void)connectionFailedWithError:(NSError *)error; // optional
 
+Blocks:
+I just added a blocks interface.
++(id)connectToRequest:(NSURLRequest *)req withBlock:(StateChangeBlock)stateChanged;
+
+StateChangedBlock takes two parameters, (id)data and (NSError *)error.
+If data is nil, NSError will have an error, otherwise you can continue with the data object.
+All reference to blocks is dependent on NS_BLOCKS_AVAILABLE, so it should compile for iOS 3 still.
+
 Helper:
 urlEncodedDataUTF8 is a category on NSDictionary. It's included for convenience, but you may or may not need it.
 
