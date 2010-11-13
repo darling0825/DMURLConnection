@@ -54,6 +54,7 @@
 -(id)init {
 	if (self = [super init]) {
 		self._stateChangeBlock = nil;
+		self.delegate = nil;
 	}
 	return self;
 }
@@ -92,9 +93,9 @@
 
 - (void) dealloc {
 	Block_release(_stateChangeBlock);
-	[super dealloc];
 	[receivedData release];
-	[delegate autorelease];
+	self.delegate = nil;
+	[super dealloc];
 }
 
 @end
