@@ -14,6 +14,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define DEBUG_DMURLConnection 1
+
 @protocol DMURLConnectionDelegate <NSObject>
 
 -(void)connectionFinishedLoadingWithData:(NSMutableData *)rd;
@@ -42,6 +44,7 @@ typedef void (^StateChangeBlock)(id,NSError *);
 
 +(id)connectToRequest:(NSURLRequest *)req withDelegate:(id)del;
 
+-(void)connection:(NSURLConnection *)connection failWithCode:(NSInteger)responseCode;
 
 
 // NSURLConnect delegate methods
