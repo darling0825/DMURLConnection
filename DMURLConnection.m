@@ -41,11 +41,8 @@
 		if (stateChanged) newCon._stateChangeBlock = stateChanged;
 		[[NSURLConnection alloc] initWithRequest:req delegate:newCon startImmediately:YES];
 	} else {
-		
-		NSError *err = [NSError errorWithDomain:@"com.davandermobile.dmurlconnection" code:101 userInfo:nil];
-		if (stateChanged) {
-			stateChanged(nil,err);
-		}
+		[self retain];
+		[self connection:nil failWithError:101];
 	}
 	return newCon;
 }
@@ -60,7 +57,28 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	self.receivedData = nil;
+	NSInteger responseCode = [response statusCode];
+	NSLog(@"Received %i http response", responseCode);
+	switch (responseCode) {
+		case 404:
+			[self connection:connection failWithCode:responseCode];
+			break;
+		default:
+			self.receivedData = nil;
+			break;
+	}
+}
+
+-(void)connection:(NSURLConnection *)connection failWithCode:(NSInteger)responseCode {
+	[connection cancel];
+	
+	NSError *err = [NSError errorWithDomain:@"com.davandermobile.dmurlconnection" code:responseCode userInfo:nil];
+	if ([self.delegate respondsToSelector:@selector(connectionFailedWithError:)]) [self.delegate connectionFailedWithError:err];
+#if NS_BLOCKS_AVAILABLE
+	_stateChangeBlock(nil,err);
+#endif
+	[connection release];
+	[self autorelease];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -73,6 +91,8 @@
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	
+	
 #if NS_BLOCKS_AVAILABLE
 	_stateChangeBlock(self.receivedData,nil);
 #endif
@@ -92,7 +112,9 @@
 }
 
 - (void) dealloc {
+#if NS_BLOCKS_AVAILABLE
 	Block_release(_stateChangeBlock);
+#endif
 	[receivedData release];
 	self.delegate = nil;
 	[super dealloc];
