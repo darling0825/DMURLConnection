@@ -97,7 +97,7 @@
 	
 	
 #if NS_BLOCKS_AVAILABLE
-	_stateChangeBlock(self.receivedData,nil);
+	if (_stateChangeBlock) _stateChangeBlock(self.receivedData,nil);
 #endif
 	[delegate connectionFinishedLoadingWithData:self.receivedData];
 	[connection release];
