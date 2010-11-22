@@ -14,7 +14,10 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef DEBUG
 #define DEBUG_DMURLConnection 1
+#endif
+
 
 @protocol DMURLConnectionDelegate <NSObject>
 

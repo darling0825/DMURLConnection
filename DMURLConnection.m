@@ -107,7 +107,9 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 #if NS_BLOCKS_AVAILABLE
-	_stateChangeBlock(nil,error);
+	if (_stateChangeBlock) {
+		_stateChangeBlock(nil,error);
+	}
 #endif
 	if ([delegate respondsToSelector:@selector(connectionFailedWithError:)]) [delegate connectionFailedWithError:error];
 	[connection release];
@@ -116,7 +118,9 @@
 
 - (void) dealloc {
 #if NS_BLOCKS_AVAILABLE
-	Block_release(_stateChangeBlock);
+	if (_stateChangeBlock) {
+		Block_release(_stateChangeBlock);
+	}
 #endif
 	[receivedData release];
 	self.delegate = nil;
