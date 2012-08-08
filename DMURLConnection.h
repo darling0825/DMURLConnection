@@ -38,6 +38,8 @@ typedef void (^StateChangeBlock)(id,NSError *);
 #endif
 }
 
+@property (nonatomic, retain) NSURLRequest *request;
+
 @property (nonatomic, retain) id<DMURLConnectionDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *receivedData;
 #if NS_BLOCKS_AVAILABLE

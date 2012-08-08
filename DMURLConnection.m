@@ -15,6 +15,7 @@
 
 @implementation DMURLConnection
 
+@synthesize request;
 @synthesize delegate;
 @synthesize receivedData;
 
@@ -25,6 +26,7 @@
 +(id)connectToRequest:(NSURLRequest *)req withDelegate:(id)del {
 	DMURLConnection *newCon = [[[self class] alloc] init];
 	if (newCon) {
+        newCon.request = req;
 		newCon.delegate = del;
 		[[NSURLConnection alloc] initWithRequest:req delegate:newCon startImmediately:YES];
 	} else {
@@ -38,6 +40,7 @@
 +(id)connectToRequest:(NSURLRequest *)req withBlock:(StateChangeBlock)stateChanged {
 	DMURLConnection *newCon = [[[self class] alloc] init];
 	if (newCon) {
+        newCon.request = req;
 		if (stateChanged) newCon._stateChangeBlock = stateChanged;
 		[[NSURLConnection alloc] initWithRequest:req delegate:newCon startImmediately:YES];
 	}
@@ -75,7 +78,7 @@
 -(void)connection:(NSURLConnection *)connection failWithCode:(NSInteger)responseCode {
 	[connection cancel];
 	
-	NSError *err = [NSError errorWithDomain:@"com.davandermobile.dmurlconnection" code:responseCode userInfo:nil];
+	NSError *err = [NSError errorWithDomain:@"com.davandermobile.dmurlconnection" code:responseCode userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"HTTP %i - %@",responseCode, [[self request] URL]] forKey:NSLocalizedDescriptionKey]];
 	if ([self.delegate respondsToSelector:@selector(connectionFailedWithError:)]) [self.delegate connectionFailedWithError:err];
 #if NS_BLOCKS_AVAILABLE
 	_stateChangeBlock(nil,err);
@@ -124,6 +127,7 @@
 #endif
 	[receivedData release];
 	self.delegate = nil;
+    self.request = nil;
 	[super dealloc];
 }
 
