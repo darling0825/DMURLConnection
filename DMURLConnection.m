@@ -57,14 +57,11 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	NSInteger responseCode = 200;
+	NSInteger responseCode = 666;
 	if ([response respondsToSelector:@selector(statusCode)]) {
 		responseCode = [(NSHTTPURLResponse *)response statusCode];
 	}
 	
-#ifdef DEBUG_DMURLConnection
-	NSLog(@"Received %i http response", responseCode);
-#endif
 	switch (responseCode) {
 		case 404:
 			[self connection:connection failWithCode:responseCode];
